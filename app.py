@@ -36,7 +36,7 @@ def delete_group():
 
 
 @app.route("/group/tasks", methods=["GET"])
-def get_tasks():
+def group_tasks():
     service = Service()
     groups = service.get_groups()
     g_id = request.args['g_id']
@@ -68,7 +68,7 @@ def update_task():
 
 
 @app.route("/task/details", methods=["GET"])
-def edit_task():
+def task_details():
     service = Service()
     t_id = request.args['t_id']
     task = service.get_task(t_id)

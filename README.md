@@ -4,3 +4,5 @@ Simple Web Application to demonstrate possibilities of [SQL DAL Maker](https://g
 Implemented using Flask.
 
 ![demo-python-flask.png](demo-python-flask.png)
+
+![erd.png](erd.png)
