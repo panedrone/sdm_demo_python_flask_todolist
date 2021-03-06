@@ -1,1 +1,0 @@
-Developed in PyCharm Community.
