@@ -1,4 +1,4 @@
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 <head>
     <style>
             body {
@@ -41,13 +41,17 @@
             }
 
 
+
+
+
+
     </style>
     <script type="text/javascript">
 
             function update_group(g_id) {
                 if (window.XMLHttpRequest) {
                     xmlhttp = new XMLHttpRequest();
-                    xmlhttp.open("POST", "/update_group?g_id=" + g_id, false); // false ==> sync
+                    xmlhttp.open("POST", "/group/update?g_id=" + g_id, false); // false ==> sync
                     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); // https://www.w3schools.com/xml/ajax_xmlhttprequest_send.asp
                     xmlhttp.send("g_name=" + document.getElementById("g_name").value);
                     // document.writeln(xmlhttp.responseText);
@@ -55,25 +59,7 @@
                 }
             }
 
-            function update_task(g_id, t_id) {
-                if (window.XMLHttpRequest) {
-                    xmlhttp = new XMLHttpRequest();
-                    xmlhttp.open("POST", "/update_task?t_id=" + t_id, false); // false == sync
-                    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); // https://www.w3schools.com/xml/ajax_xmlhttprequest_send.asp
-                    xmlhttp.send("t_date=" + document.getElementById("t_date").value +
-                            "&t_subject=" + document.getElementById("t_subject").value +
-                            "&t_priority=" + document.getElementById("t_priority").value +
-                            "&t_comments=" + document.getElementById("t_comments").value);
-                    // document.writeln(xmlhttp.responseText);
-                    location.reload();
-
-                    // document.writeln("HELLO");
-                }
-            }
-
-
     </script>
-
 </head>
 <body>
 <table cellpadding=10 class="bg">
@@ -91,7 +77,7 @@
                 {% for g in groups %}
                 <tr>
                     <td>
-                        <a href="/tasks?g_id={{g.g_id}}">{{g.g_name}}</a>
+                        <a href="/group/tasks?g_id={{g.g_id}}">{{g.g_name}}</a>
                     </td>
                     <td align="center">
                         {{g.tasks_count}}
@@ -100,15 +86,15 @@
                         <a href="javascript:update_group({{g.g_id}});">u</a>
                     </td>
                     <td>
-                        <a href="/delete_group?g_id={{g.g_id}}">x</a>
+                        <a href="/group/delete?g_id={{g.g_id}}">x</a>
                     </td>
                 </tr>
                 {% endfor %}
             </table>
 
-            <form method="POST" action="/create_group">
-                <input id="g_name" type="text" name="g_name" />
-                <input type="submit" value="+" />
+            <form method="POST" action="/group/create">
+                <input id="g_name" type="text" name="g_name"/>
+                <input type="submit" value="+"/>
             </form>
 
         </td>
@@ -129,21 +115,21 @@
                         {{t.t_date}}
                     </td>
                     <td>
-                        <a href="/edit_task?t_id={{t.t_id}}">{{t.t_subject}}</a>
+                        <a href="/task/details?t_id={{t.t_id}}">{{t.t_subject}}</a>
                     </td>
                     <td align="center">
                         {{t.t_priority}}
                     </td>
                     <td>
-                        <a href="/delete_task?t_id={{t.t_id}}">x</a>
+                        <a href="/task/delete?t_id={{t.t_id}}">x</a>
                     </td>
                 </tr>
                 {% endfor %}
             </table>
 
-            <form method="POST" action="/create_task?g_id={{current_group.g_id}}">
-                <input type="text" name="t_subject" />
-                <input type="submit" value="+" />
+            <form method="POST" action="/task/create?g_id={{current_group.g_id}}">
+                <input type="text" name="t_subject"/>
+                <input type="submit" value="+"/>
             </form>
 
         </td>
@@ -152,35 +138,36 @@
         {% if current_task is not none %}
         <td>
             <h2>{{current_task.t_subject}}</h2>
+            <form method="post" action="/task/update?t_id={{current_task.t_id}}">
+                <table>
+                    <tr>
+                        <td class="form-label">Date</td>
+                        <td><input type="text" name="t_date" id="t_date" value="{{current_task.t_date}}"/></td>
+                    </tr>
+                    <tr>
+                        <td class="form-label">Subject</td>
+                        <td><input type="text" name="t_subject" id="t_subject" value="{{current_task.t_subject}}"/></td>
+                    </tr>
+                    <tr>
+                        <td class="form-label">Priority</td>
+                        <td><input type="text" name="t_priority" id="t_priority" value="{{current_task.t_priority}}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                    <tr>
+                        <td class="form-label">Comments</td>
+                        <td><textarea name="t_comments" id="t_comments" cols="40"
+                                      rows="5">{{current_task.t_comments}}</textarea></td>
+                    </tr>
+                </table>
 
-            <table>
-                <tr>
-                    <td class="form-label">Date</td>
-                    <td><input type="text" name="t_date" id="t_date" value="{{current_task.t_date}}"/></td>
-                </tr>
-                <tr>
-                    <td class="form-label">Subject</td>
-                    <td><input type="text" name="t_subject" id="t_subject" value="{{current_task.t_subject}}"/></td>
-                </tr>
-                <tr>
-                    <td class="form-label">Priority</td>
-                    <td><input type="text" name="t_priority" id="t_priority" value="{{current_task.t_priority}}"/>
-                    </td>
-                </tr>
-                <tr>
-                <tr>
-                    <td class="form-label">Comments</td>
-                    <td><textarea name="t_comments" id="t_comments" cols="40"
-                                  rows="5">{{current_task.t_comments}}</textarea></td>
-                </tr>
-            </table>
-
-            <div align="right">
-                <p style="text-align: center;">
-                    <a href="javascript:update_task({{current_group.g_id}}, {{current_task.t_id}});">Update</a>
-                    <a href="/tasks?g_id={{current_group.g_id}}">Close</a>
-                </p>
-            </div>
+                <div align="right">
+                    <p style="text-align: center;">
+                        <input type="submit" value="Update"/>
+                        <a href="/group/tasks?g_id={{current_group.g_id}}"><input type="button" value="Close"></a>
+                    </p>
+                </div>
+            </form>
         </td>
         {% endif %}
     </tr>

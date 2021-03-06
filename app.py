@@ -11,14 +11,14 @@ def home():
     return render_template("home.html", groups=groups, current_group=None, tasks=None, current_task=None)
 
 
-@app.route("/create_group", methods=["POST"])
+@app.route("/group/create", methods=["POST"])
 def create_group():
     service = Service()
     service.create_group(request.form["g_name"])
     return redirect("/")
 
 
-@app.route("/update_group", methods=["POST"])
+@app.route("/group/update", methods=["POST"])
 def update_group():
     service = Service()
     g_id = request.args["g_id"]
@@ -27,7 +27,7 @@ def update_group():
     return redirect("/")
 
 
-@app.route("/delete_group", methods=["GET"])
+@app.route("/group/delete", methods=["GET"])
 def delete_group():
     service = Service()
     g_id = request.args['g_id']
@@ -35,29 +35,7 @@ def delete_group():
     return redirect("/")
 
 
-@app.route("/create_task", methods=["POST"])
-def create_task():
-    service = Service()
-    g_id = request.args['g_id']
-    t_subject = request.form["t_subject"]
-    task = service.create_task(g_id, t_subject)
-    return redirect("/edit_task?t_id=" + str(task.t_id))
-
-
-@app.route("/update_task", methods=["POST"])
-def update_task():
-    service = Service()
-    t_id = request.args['t_id']
-    task = service.get_task(t_id)
-    task.t_date = request.form["t_date"]
-    task.t_subject = request.form["t_subject"]
-    task.t_priority = request.form["t_priority"]
-    task.t_comments = request.form["t_comments"]
-    service.update_task(task)
-    return redirect("/edit_task?t_id=" + str(t_id))
-
-
-@app.route("/tasks", methods=["GET"])
+@app.route("/group/tasks", methods=["GET"])
 def get_tasks():
     service = Service()
     groups = service.get_groups()
@@ -67,7 +45,29 @@ def get_tasks():
     return render_template("home.html", groups=groups, current_group=current_group, tasks=tasks, current_task=None)
 
 
-@app.route("/edit_task", methods=["GET"])
+@app.route("/task/create", methods=["POST"])
+def create_task():
+    service = Service()
+    g_id = request.args['g_id']
+    t_subject = request.form["t_subject"]
+    task = service.create_task(g_id, t_subject)
+    return redirect("/task/details?t_id=" + str(task.t_id))
+
+
+@app.route("/task/update", methods=["POST"])
+def update_task():
+    service = Service()
+    t_id = request.args['t_id']
+    task = service.get_task(t_id)
+    task.t_date = request.form["t_date"]
+    task.t_subject = request.form["t_subject"]
+    task.t_priority = request.form["t_priority"]
+    task.t_comments = request.form["t_comments"]
+    service.update_task(task)
+    return redirect("/task/details?t_id=" + str(t_id))
+
+
+@app.route("/task/details", methods=["GET"])
 def edit_task():
     service = Service()
     t_id = request.args['t_id']
@@ -79,14 +79,14 @@ def edit_task():
     return render_template("home.html", groups=groups, current_group=current_group, tasks=tasks, current_task=task)
 
 
-@app.route("/delete_task", methods=["GET"])
+@app.route("/task/delete", methods=["GET"])
 def delete_task():
     service = Service()
     t_id = request.args['t_id']
     task = service.get_task(t_id)
     g_id = task.g_id
     service.delete_task(t_id)
-    return redirect("/tasks?g_id=" + str(g_id))
+    return redirect("/group/tasks?g_id=" + str(g_id))
 
 
 if __name__ == "__main__":  # on running python app.py
