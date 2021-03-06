@@ -1,0 +1,189 @@
+<html>
+<head>
+    <style>
+            body {
+                font-family: Arial, Helvetica, sans-serif;
+                /*font-family: Verdana, Geneva, sans-serif;*/
+            }
+
+            .bg {
+                color:#555;
+                background-color: #f0f0f0;
+                font-size: 12px;
+            }
+
+            .bg td {
+                vertical-align: top;
+            }
+
+            .form-label {
+                padding: 3pt;
+            }
+
+            .section {
+                font-family: arial,sans-serif;
+                font-size:12px;
+                border: solid 1px #666;
+                border-collapse: collapse;
+            }
+            .section th {
+                border: solid 1px #a8a8a8;
+                padding: 8px;
+                /*background-color: #028Bc5;*/
+                /*color:#fff;*/
+                text-shadow: 0px 1px 0px rgba(255,255,255,0.7);
+                background: #c4c4c4 -moz-linear-gradient(top, rgba(255,255,255,0.8), rgba(255,255,255,0));
+            }
+            .section td {
+                padding: 8px;
+                border: solid 1px #a8a8a8;
+                background-color: #ffffff;
+            }
+
+
+    </style>
+    <script type="text/javascript">
+
+            function update_group(g_id) {
+                if (window.XMLHttpRequest) {
+                    xmlhttp = new XMLHttpRequest();
+                    xmlhttp.open("POST", "/update_group?g_id=" + g_id, false); // false ==> sync
+                    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); // https://www.w3schools.com/xml/ajax_xmlhttprequest_send.asp
+                    xmlhttp.send("g_name=" + document.getElementById("g_name").value);
+                    // document.writeln(xmlhttp.responseText);
+                    location.reload();
+                }
+            }
+
+            function update_task(g_id, t_id) {
+                if (window.XMLHttpRequest) {
+                    xmlhttp = new XMLHttpRequest();
+                    xmlhttp.open("POST", "/update_task?t_id=" + t_id, false); // false == sync
+                    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); // https://www.w3schools.com/xml/ajax_xmlhttprequest_send.asp
+                    xmlhttp.send("t_date=" + document.getElementById("t_date").value +
+                            "&t_subject=" + document.getElementById("t_subject").value +
+                            "&t_priority=" + document.getElementById("t_priority").value +
+                            "&t_comments=" + document.getElementById("t_comments").value);
+                    // document.writeln(xmlhttp.responseText);
+                    location.reload();
+
+                    // document.writeln("HELLO");
+                }
+            }
+
+
+    </script>
+
+</head>
+<body>
+<table cellpadding=10 class="bg">
+    <tr>
+        <td>
+            <h2>TODO</h2>
+
+            <table border="1" cellspacing=1 cellpadding=5 class="section">
+                <tr>
+                    <th>Group</th>
+                    <th>Tasks Count</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                {% for g in groups %}
+                <tr>
+                    <td>
+                        <a href="/tasks?g_id={{g.g_id}}">{{g.g_name}}</a>
+                    </td>
+                    <td align="center">
+                        {{g.tasks_count}}
+                    </td>
+                    <td>
+                        <a href="javascript:update_group({{g.g_id}});">u</a>
+                    </td>
+                    <td>
+                        <a href="/delete_group?g_id={{g.g_id}}">x</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+
+            <form method="POST" action="/create_group">
+                <input id="g_name" type="text" name="g_name" />
+                <input type="submit" value="+" />
+            </form>
+
+        </td>
+
+        {% if tasks is not none %}
+        <td>
+            <h2>{{current_group.g_name}}</h2>
+            <table border cellspacing=1 cellpadding=5 class="section">
+                <tr>
+                    <th>Date</th>
+                    <th>Subject</th>
+                    <th>Priority</th>
+                    <th></th>
+                </tr>
+                {% for t in tasks %}
+                <tr>
+                    <td>
+                        {{t.t_date}}
+                    </td>
+                    <td>
+                        <a href="/edit_task?t_id={{t.t_id}}">{{t.t_subject}}</a>
+                    </td>
+                    <td align="center">
+                        {{t.t_priority}}
+                    </td>
+                    <td>
+                        <a href="/delete_task?t_id={{t.t_id}}">x</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+
+            <form method="POST" action="/create_task?g_id={{current_group.g_id}}">
+                <input type="text" name="t_subject" />
+                <input type="submit" value="+" />
+            </form>
+
+        </td>
+        {% endif %}
+
+        {% if current_task is not none %}
+        <td>
+            <h2>{{current_task.t_subject}}</h2>
+
+            <table>
+                <tr>
+                    <td class="form-label">Date</td>
+                    <td><input type="text" name="t_date" id="t_date" value="{{current_task.t_date}}"/></td>
+                </tr>
+                <tr>
+                    <td class="form-label">Subject</td>
+                    <td><input type="text" name="t_subject" id="t_subject" value="{{current_task.t_subject}}"/></td>
+                </tr>
+                <tr>
+                    <td class="form-label">Priority</td>
+                    <td><input type="text" name="t_priority" id="t_priority" value="{{current_task.t_priority}}"/>
+                    </td>
+                </tr>
+                <tr>
+                <tr>
+                    <td class="form-label">Comments</td>
+                    <td><textarea name="t_comments" id="t_comments" cols="40"
+                                  rows="5">{{current_task.t_comments}}</textarea></td>
+                </tr>
+            </table>
+
+            <div align="right">
+                <p style="text-align: center;">
+                    <a href="javascript:update_task({{current_group.g_id}}, {{current_task.t_id}});">Update</a>
+                    <a href="/tasks?g_id={{current_group.g_id}}">Close</a>
+                </p>
+            </div>
+        </td>
+        {% endif %}
+    </tr>
+</table>
+</body>
+</html>
