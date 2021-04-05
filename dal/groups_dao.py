@@ -27,7 +27,7 @@ class GroupsDao:
     def read_group(self, g_id, obj):
         """
         C(R)UD: groups
-        @type g_id: int
+        @type g_id: java.lang.Integer
         @type obj: Group
         @rtype: None
         @raise: Exception if amount of returned rows != 1.

@@ -6,9 +6,9 @@ http://sqldalmaker.sourceforge.net
 
 class Task:
     """
-    @type t_id: int | None
-    @type g_id: int | None
-    @type t_priority: int | None
+    @type t_id: java.lang.Integer | None
+    @type g_id: java.lang.Integer | None
+    @type t_priority: java.lang.Integer | None
     @type t_date: str | None
     @type t_subject: str | None
     @type t_comments: str | None

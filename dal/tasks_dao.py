@@ -91,7 +91,7 @@ class TasksDao:
 
     def get_count(self):
         """
-        @rtype: object
+        @rtype: java.lang.Object
         @raise: Exception if amount of returned rows != 1.
         """
         sql = """select count(*) from tasks"""

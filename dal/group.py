@@ -6,9 +6,9 @@ http://sqldalmaker.sourceforge.net
 
 class Group:
     """
-    @type g_id: object | None
-    @type g_name: object | None
-    @type tasks_count: object | None
+    @type g_id: java.lang.Object | None
+    @type g_name: java.lang.Object | None
+    @type tasks_count: java.lang.Object | None
     """
 
     def __init__(self):
