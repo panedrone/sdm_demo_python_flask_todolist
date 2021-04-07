@@ -12,23 +12,23 @@ def home():
 
 
 @app.route("/group/create", methods=["POST"])
-def create_group():
+def group_create():
     service = Service()
     service.create_group(request.form["g_name"])
     return redirect("/")
 
 
 @app.route("/group/update", methods=["POST"])
-def update_group():
+def group_update():
     service = Service()
     g_id = request.args["g_id"]
     g_name = request.form["g_name"]
     service.update_group(g_id, g_name)
-    return redirect("/")
+    return redirect(f"/group/tasks?g_id={g_id}")
 
 
 @app.route("/group/delete", methods=["GET"])
-def delete_group():
+def group_delete():
     service = Service()
     g_id = request.args['g_id']
     service.delete_group(g_id)
@@ -46,16 +46,16 @@ def group_tasks():
 
 
 @app.route("/task/create", methods=["POST"])
-def create_task():
+def task_create():
     service = Service()
     g_id = request.args['g_id']
     t_subject = request.form["t_subject"]
     task = service.create_task(g_id, t_subject)
-    return redirect("/task/details?t_id=" + str(task.t_id))
+    return redirect(f"/task/details?t_id={task.t_id}")
 
 
 @app.route("/task/update", methods=["POST"])
-def update_task():
+def task_update():
     service = Service()
     t_id = request.args['t_id']
     task = service.get_task(t_id)
@@ -64,7 +64,7 @@ def update_task():
     task.t_priority = request.form["t_priority"]
     task.t_comments = request.form["t_comments"]
     service.update_task(task)
-    return redirect("/task/details?t_id=" + str(t_id))
+    return redirect(f"/task/details?t_id={t_id}")
 
 
 @app.route("/task/details", methods=["GET"])
@@ -80,13 +80,13 @@ def task_details():
 
 
 @app.route("/task/delete", methods=["GET"])
-def delete_task():
+def task_delete():
     service = Service()
     t_id = request.args['t_id']
     task = service.get_task(t_id)
     g_id = task.g_id
     service.delete_task(t_id)
-    return redirect("/group/tasks?g_id=" + str(g_id))
+    return redirect(f"/group/tasks?g_id={g_id}")
 
 
 if __name__ == "__main__":  # on running python app.py

@@ -17,7 +17,8 @@
             }
 
             .form-label {
-                padding: 3pt;
+                padding: 4pt;
+                font-size:11pt;
             }
 
             .section {
@@ -25,6 +26,7 @@
                 font-size:12px;
                 border: solid 1px #666;
                 border-collapse: collapse;
+                min-width: 300px;
             }
             .section th {
                 border: solid 1px #a8a8a8;
@@ -41,38 +43,16 @@
             }
 
 
-
-
-
-
     </style>
-    <script type="text/javascript">
-
-            function update_group(g_id) {
-                if (window.XMLHttpRequest) {
-                    xmlhttp = new XMLHttpRequest();
-                    xmlhttp.open("POST", "/group/update?g_id=" + g_id, false); // false ==> sync
-                    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); // https://www.w3schools.com/xml/ajax_xmlhttprequest_send.asp
-                    xmlhttp.send("g_name=" + document.getElementById("g_name").value);
-                    // document.writeln(xmlhttp.responseText);
-                    location.reload();
-                }
-            }
-
-    </script>
 </head>
 <body>
 <table cellpadding=10 class="bg">
     <tr>
         <td>
-            <h2>TODO</h2>
-
-            <table border="1" cellspacing=1 cellpadding=5 class="section">
+            <table cellspacing=1 cellpadding=5 class="section">
                 <tr>
                     <th>Group</th>
                     <th>Tasks Count</th>
-                    <th></th>
-                    <th></th>
                 </tr>
                 {% for g in groups %}
                 <tr>
@@ -81,12 +61,6 @@
                     </td>
                     <td align="center">
                         {{g.tasks_count}}
-                    </td>
-                    <td>
-                        <a href="javascript:update_group({{g.g_id}});">u</a>
-                    </td>
-                    <td>
-                        <a href="/group/delete?g_id={{g.g_id}}">x</a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -101,13 +75,17 @@
 
         {% if tasks is not none %}
         <td>
-            <h2>{{current_group.g_name}}</h2>
+            <form method="POST" action="/group/update?g_id={{current_group.g_id}}">
+                <input style="font-size:14pt;" type="text" name="g_name" value="{{current_group.g_name}}"/>
+                <input type="submit" value="!"/>
+                <a href="/group/delete?g_id={{current_group.g_id}}"><input type="button" value="x"/></a>
+            </form>
+
             <table border cellspacing=1 cellpadding=5 class="section">
                 <tr>
                     <th>Date</th>
                     <th>Subject</th>
                     <th>Priority</th>
-                    <th></th>
                 </tr>
                 {% for t in tasks %}
                 <tr>
@@ -119,9 +97,6 @@
                     </td>
                     <td align="center">
                         {{t.t_priority}}
-                    </td>
-                    <td>
-                        <a href="/task/delete?t_id={{t.t_id}}">x</a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -137,7 +112,8 @@
 
         {% if current_task is not none %}
         <td>
-            <h2>{{current_task.t_subject}}</h2>
+            <span style="font-size:14pt;">{{current_task.t_subject}}</span>
+            <br/><br/>
             <form method="post" action="/task/update?t_id={{current_task.t_id}}">
                 <table>
                     <tr>
@@ -150,7 +126,8 @@
                     </tr>
                     <tr>
                         <td class="form-label">Priority</td>
-                        <td><input type="text" name="t_priority" id="t_priority" value="{{current_task.t_priority}}"/>
+                        <td>
+                            <input type="text" name="t_priority" id="t_priority" value="{{current_task.t_priority}}"/>
                         </td>
                     </tr>
                     <tr>
@@ -163,8 +140,9 @@
 
                 <div align="right">
                     <p style="text-align: center;">
-                        <input type="submit" value="Update"/>
-                        <a href="/group/tasks?g_id={{current_group.g_id}}"><input type="button" value="Close"></a>
+                        <input type="submit" value="!"/>
+                        <a href="/task/delete?t_id={{current_task.t_id}}"><input type="button" value="x"></a>
+                        <a href="/group/tasks?g_id={{current_group.g_id}}"><input type="button" value="&lt;"></a>
                     </p>
                 </div>
             </form>
