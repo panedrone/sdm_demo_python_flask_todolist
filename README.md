@@ -1,5 +1,5 @@
 # sdm.demo.python.flask.todolist
-Demo of how to use [SQL DAL Maker](https://github.com/panedrone/sqldalmaker) + Python/Flask.
+Quick Demo of how to use [SQL DAL Maker](https://github.com/panedrone/sqldalmaker) + Python/Flask.
 
 ![demo-python-flask.png](demo-python-flask.png)
 
