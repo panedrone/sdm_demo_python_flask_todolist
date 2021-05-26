@@ -68,4 +68,3 @@ class Service:
     def update_task(self, task):
         TasksDao(self.ds).update_task(task)
         self.ds.commit()
-
