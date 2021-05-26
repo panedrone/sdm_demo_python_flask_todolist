@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect
+from flask import Flask, request, render_template
 from flask_restful import Api, Resource
 
 from rest_utils import to_json_str
@@ -82,19 +82,6 @@ api.add_resource(TasksResource, '/tasks/<t_id>')
 @app.route("/")
 def home():
     return render_template("index.html")
-
-
-@app.route("/task/update", methods=["POST"])
-def task_update():
-    service = Service()
-    t_id = request.args['t_id']
-    task = service.get_task(t_id)
-    task.t_date = request.form["t_date"]
-    task.t_subject = request.form["t_subject"]
-    task.t_priority = request.form["t_priority"]
-    task.t_comments = request.form["t_comments"]
-    service.update_task(task)
-    return redirect(f"/task/details?t_id={t_id}")
 
 
 if __name__ == "__main__":  # on running python app.py
