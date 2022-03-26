@@ -1,8 +1,10 @@
 import flask
 import flask_restful
 
+from dal.data_store import DataStore
 from rest_utils import to_json_str
-from service import Service
+from services.groups_service import GroupsService
+from services.tasks_service import TasksService
 
 app = flask.Flask(__name__)
 api = flask_restful.Api(app)
@@ -11,12 +13,12 @@ api = flask_restful.Api(app)
 class GroupListResource(flask_restful.Resource):
     @staticmethod
     def get():
-        res = Service().get_groups()
+        res = GroupsService().get_groups()
         return to_json_str(res)
 
     @staticmethod
     def post():
-        service = Service()
+        service = GroupsService()
         g_name = flask.request.json["g_name"]
         service.create_group(g_name)
 
@@ -24,42 +26,42 @@ class GroupListResource(flask_restful.Resource):
 class GroupsResource(flask_restful.Resource):
     @staticmethod
     def get(g_id):
-        res = Service().get_group(g_id)
+        res = GroupsService().get_group(g_id)
         return to_json_str(res)
 
     @staticmethod
     def put(g_id):
         g_name = flask.request.json["g_name"]
-        Service().update_group(g_id, g_name)
+        GroupsService().update_group(g_id, g_name)
 
     @staticmethod
     def delete(g_id):
-        Service().delete_group(g_id)
+        GroupsService().delete_group(g_id)
 
 
 class TaskListResource(flask_restful.Resource):
     @staticmethod
     def get():
         g_id = flask.request.args['g_id']
-        res = Service().get_group_tasks(g_id)
+        res = TasksService().get_group_tasks(g_id)
         return to_json_str(res)
 
     @staticmethod
     def post():
         g_id = flask.request.args['g_id']
         t_subject = flask.request.json["t_subject"]
-        Service().create_task(g_id, t_subject)
+        TasksService().create_task(g_id, t_subject)
 
 
 class TasksResource(flask_restful.Resource):
     @staticmethod
     def get(t_id):
-        task = Service().get_task(t_id)
+        task = TasksService().get_task(t_id)
         return to_json_str(task)
 
     @staticmethod
     def put(t_id):
-        service = Service()
+        service = TasksService()
         task = service.get_task(t_id)
         inp = flask.request.json
         task.t_date = inp["t_date"]
@@ -70,7 +72,7 @@ class TasksResource(flask_restful.Resource):
 
     @staticmethod
     def delete(t_id):
-        Service().delete_task(t_id)
+        TasksService().delete_task(t_id)
 
 
 api.add_resource(GroupListResource, "/groups")
