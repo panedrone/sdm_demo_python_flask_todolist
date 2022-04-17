@@ -1,7 +1,7 @@
 from dal.data_store import DataStore
-from dal.group import Group
+from dal.group_model import GroupModel
 from dal.groups_dao import GroupsDao
-from dal.tasks_dao import TasksDao
+from dal.task_model import TaskModel
 
 
 class GroupsService:
@@ -11,29 +11,26 @@ class GroupsService:
         self.ds.open()
 
     def create_group(self, g_name):
-        group = Group()
-        group.g_name = g_name
-        group.tasks_count = 0
-        GroupsDao(self.ds).create_group(group)
+        group = GroupModel(g_name=g_name)
+        self.ds.session.add(group)
         self.ds.commit()
 
     def delete_group(self, g_id):
-        TasksDao(self.ds).delete_group_tasks(g_id)
-        GroupsDao(self.ds).delete_group(g_id)
+        # https://stackoverflow.com/questions/26643727/python-sqlalchemy-deleting-with-the-session-object
+        self.ds.session.query(TaskModel).filter(TaskModel.g_id == g_id).delete()
+        self.ds.session.query(GroupModel).filter(GroupModel.g_id == g_id).delete()
         self.ds.commit()
 
     def update_group(self, g_id, g_name):
-        dao = GroupsDao(self.ds)
-        group = Group()
-        dao.read_group(g_id, group)
+        # https://code-maven.com/slides/python/orm-update
+        group = self.ds.session.query(GroupModel).get(g_id)
         group.g_name = g_name
-        dao.update_group(group)
         self.ds.commit()
 
     def get_groups(self):
         return GroupsDao(self.ds).get_groups()
 
     def get_group(self, g_id):
-        group = Group()
-        GroupsDao(self.ds).read_group(g_id, group)
+        # https://www.tutorialspoint.com/sqlalchemy/sqlalchemy_orm_updating_objects.htm
+        group = self.ds.session.query(GroupModel).get(g_id)
         return group

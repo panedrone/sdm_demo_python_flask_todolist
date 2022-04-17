@@ -1,7 +1,6 @@
 import flask
 import flask_restful
 
-from dal.data_store import DataStore
 from rest_utils import to_json_str
 from services.groups_service import GroupsService
 from services.tasks_service import TasksService

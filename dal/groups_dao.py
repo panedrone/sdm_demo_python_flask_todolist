@@ -11,50 +11,6 @@ class GroupsDao:
     def __init__(self, ds):
         self.ds = ds
 
-    def create_group(self, p):
-        """
-        (C)RUD: groups
-        Generated values are passed to DTO.
-        @type p: Group
-        @rtype: None
-        @raise: Exception if no rows inserted.
-        """
-        sql = """insert into groups (g_name) values (?)"""
-        _ai_values = [["g_id", None]]
-        self.ds.insert_row(sql, [p.g_name], _ai_values)
-        p.g_id = _ai_values[0][1]
-
-    def read_group(self, g_id, obj):
-        """
-        C(R)UD: groups
-        @type g_id: java.lang.Integer
-        @type obj: Group
-        @rtype: None
-        @raise: Exception if amount of returned rows != 1.
-        """
-        sql = """select * from groups where g_id=?"""
-        row = self.ds.query_single_row(sql, [g_id])
-        obj.g_id = row["g_id"]  # q(g_id) <- t(g_id)
-        obj.g_name = row["g_name"]  # q(g_name) <- t(g_name)
-
-    def update_group(self, p):
-        """
-        CR(U)D: groups
-        @type p: Group
-        @rtype: int (the number of affected rows)
-        """
-        sql = """update groups set g_name=? where g_id=?"""
-        return self.ds.exec_dml(sql, [p.g_name, p.g_id])
-
-    def delete_group(self, g_id):
-        """
-        CRU(D): groups
-        @type g_id: java.lang.Integer
-        @rtype: int (the number of affected rows)
-        """
-        sql = """delete from groups where g_id=?"""
-        return self.ds.exec_dml(sql, [g_id])
-
     def get_groups(self):
         """
         @rtype: list[Group]

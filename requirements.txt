@@ -1,2 +1,3 @@
-Flask
+Flask~=2.0.1
 Flask-RESTFul
+SQLAlchemy~=1.4.35
