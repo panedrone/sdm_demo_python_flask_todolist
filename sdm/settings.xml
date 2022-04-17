@@ -73,6 +73,8 @@
         <type detected="java.lang.Boolean" target="bool"/>
         <type detected="byte[]" target="bytes"/>
 
+        <type detected="java.lang.Object" target="object"/>
+
     </type-map>
 
     <global-macros>
