@@ -20,7 +20,6 @@ class TasksService:
         return task
 
     def create_task(self, g_id, t_subject):
-        # task = Task()
         task = TaskModel()
         task.g_id = g_id
         task.t_subject = t_subject

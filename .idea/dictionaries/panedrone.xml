@@ -2,6 +2,7 @@
   <dictionary name="panedrone">
     <words>
       <w>endfor</w>
+      <w>tablename</w>
     </words>
   </dictionary>
 </component>

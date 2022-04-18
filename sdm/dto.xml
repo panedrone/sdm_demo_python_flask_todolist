@@ -3,7 +3,7 @@
              xsi:noNamespaceSchemaLocation="dto.xsd">
 
     <dto-class name="sa-GroupModel" ref="groups"/>
-    <dto-class name="Group" ref="get_groups.sql"/>
+    <dto-class name="sa-GroupExModel" ref="get_groups.sql"/>
 
     <dto-class name="sa-TaskModel" ref="tasks"/>
 
