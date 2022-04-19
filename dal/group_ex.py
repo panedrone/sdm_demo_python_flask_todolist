@@ -8,7 +8,7 @@ from sqlalchemy import *
 from .data_store import *
 
 
-class GroupExModel(Base):
+class GroupEx(Base):
     g_id = Column('g_id', autoincrement=True)
     g_name = Column('g_name')
     g_comments = Column('g_comments')
@@ -18,4 +18,5 @@ class GroupExModel(Base):
 
     SQL = """select g.*,  
                 (select count(*) from tasks where g_id=g.g_id) as tasks_count 
-                from groups g"""
+                from groups g 
+                order by g.g_id"""

@@ -1,8 +1,8 @@
 from dal.data_store import DataStore
-from dal.group_ex_model import GroupExModel
-from dal.group_model import GroupModel
+from dal.group import Group
+from dal.group_ex import GroupEx
 from dal.groups_dao import GroupsDao
-from dal.task_model import TaskModel
+from dal.task import Task
 
 
 class GroupsService:
@@ -12,19 +12,19 @@ class GroupsService:
         self.ds.open()
 
     def create_group(self, g_name):
-        group = GroupModel(g_name=g_name)
+        group = Group(g_name=g_name)
         self.ds.session.add(group)
         self.ds.commit()
 
     def delete_group(self, g_id):
         # https://stackoverflow.com/questions/26643727/python-sqlalchemy-deleting-with-the-session-object
-        self.ds.session.query(TaskModel).filter(TaskModel.g_id == g_id).delete()
-        self.ds.session.query(GroupModel).filter(GroupModel.g_id == g_id).delete()
+        self.ds.session.query(Task).filter(Task.g_id == g_id).delete()
+        self.ds.session.query(Group).filter(Group.g_id == g_id).delete()
         self.ds.commit()
 
     def update_group(self, g_id, g_name):
         # https://code-maven.com/slides/python/orm-update
-        group = self.ds.session.query(GroupModel).get(g_id)
+        group = self.ds.session.query(Group).get(g_id)
         group.g_name = g_name
         self.ds.commit()
 
@@ -37,11 +37,11 @@ class GroupsService:
         # query = self.ds.engine.execute(GroupExModel.SQL) # it returns an array of tuples
         # return query.all()
 
-        m: GroupExModel = None
+        # m: GroupEx = None
 
-        return GroupsDao(self.ds).get_groups()
+        return GroupsDao(self.ds).get_groups(GroupEx.SQL)
 
     def get_group(self, g_id):
         # https://www.tutorialspoint.com/sqlalchemy/sqlalchemy_orm_updating_objects.htm
-        group = self.ds.session.query(GroupModel).get(g_id)
+        group = self.ds.session.query(Group).get(g_id)
         return group

@@ -8,7 +8,7 @@ from sqlalchemy import *
 from .data_store import *
 
 
-class TaskModel(Base):
+class Task(Base):
     __tablename__ = 'tasks'
 
     t_id = Column('t_id', Integer, primary_key=True, autoincrement=True)

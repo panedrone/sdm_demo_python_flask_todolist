@@ -8,7 +8,7 @@ from sqlalchemy import *
 from .data_store import *
 
 
-class GroupModel(Base):
+class Group(Base):
     __tablename__ = 'groups'
 
     g_id = Column('g_id', Integer, primary_key=True, autoincrement=True)

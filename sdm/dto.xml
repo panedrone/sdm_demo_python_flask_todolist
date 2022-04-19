@@ -2,9 +2,9 @@
 <dto-classes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:noNamespaceSchemaLocation="dto.xsd">
 
-    <dto-class name="sa-GroupModel" ref="groups"/>
-    <dto-class name="sa-GroupExModel" ref="get_groups.sql"/>
+    <dto-class name="sa-Group" ref="groups"/>
+    <dto-class name="sa-GroupEx" ref="get_groups.sql"/>
 
-    <dto-class name="sa-TaskModel" ref="tasks"/>
+    <dto-class name="sa-Task" ref="tasks"/>
 
 </dto-classes>
