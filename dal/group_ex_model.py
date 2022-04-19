@@ -9,8 +9,9 @@ from .data_store import *
 
 
 class GroupExModel(Base):
-    g_id = Column('g_id')
+    g_id = Column('g_id', autoincrement=True)
     g_name = Column('g_name')
+    g_comments = Column('g_comments')
     tasks_count = Column('tasks_count')
 
     __abstract__ = True

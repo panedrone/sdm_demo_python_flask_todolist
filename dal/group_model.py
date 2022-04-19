@@ -13,3 +13,4 @@ class GroupModel(Base):
 
     g_id = Column('g_id', Integer, primary_key=True, autoincrement=True)
     g_name = Column('g_name', String)
+    g_comments = Column('g_comments', String)

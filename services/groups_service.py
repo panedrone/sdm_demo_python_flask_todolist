@@ -1,4 +1,5 @@
 from dal.data_store import DataStore
+from dal.group_ex_model import GroupExModel
 from dal.group_model import GroupModel
 from dal.groups_dao import GroupsDao
 from dal.task_model import TaskModel
@@ -28,6 +29,16 @@ class GroupsService:
         self.ds.commit()
 
     def get_groups(self):
+        # https://stackoverflow.com/questions/17972020/how-to-execute-raw-sql-in-flask-sqlalchemy-app
+        # user = session.query(User).from_statement(
+        #     text("""SELECT * FROM users where name=:name""")
+        # ).params(name="ed").all()
+
+        # query = self.ds.engine.execute(GroupExModel.SQL) # it returns an array of tuples
+        # return query.all()
+
+        m: GroupExModel = None
+
         return GroupsDao(self.ds).get_groups()
 
     def get_group(self, g_id):
