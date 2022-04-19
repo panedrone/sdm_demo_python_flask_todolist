@@ -24,6 +24,7 @@ class GroupsDao:
             _obj = GroupExModel()
             _obj.g_id = row["g_id"]  # q(g_id) <- q(g_id)
             _obj.g_name = row["g_name"]  # q(g_name) <- q(g_name)
+            _obj.g_comments = row["g_comments"]  # q(g_comments) <- q(g_comments)
             _obj.tasks_count = row["tasks_count"]  # q(tasks_count) <- q(tasks_count)
             _res.append(_obj)
 
