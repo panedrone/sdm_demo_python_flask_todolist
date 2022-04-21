@@ -20,10 +20,10 @@ class GroupsDao:
 
         def _map_cb(row):
             _obj = GroupEx()
-            _obj.g_id = row["g_id"]  # q(g_id) <- q(g_id)
-            _obj.g_name = row["g_name"]  # q(g_name) <- q(g_name)
-            _obj.g_comments = row["g_comments"]  # q(g_comments) <- q(g_comments)
-            _obj.tasks_count = row["tasks_count"]  # q(tasks_count) <- q(tasks_count)
+            _obj.g_id = row["g_id"]  # q <- q
+            _obj.g_name = row["g_name"]  # q <- q
+            _obj.g_comments = row["g_comments"]  # q <- q
+            _obj.tasks_count = row["tasks_count"]  # q <- q
             _res.append(_obj)
 
         self.ds.query_all_rows(sql, [], _map_cb)
