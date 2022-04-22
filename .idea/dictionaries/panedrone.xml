@@ -2,6 +2,10 @@
   <dictionary name="panedrone">
     <words>
       <w>endfor</w>
+      <w>makedsn</w>
+      <w>mysqlconnector</w>
+      <w>orcl</w>
+      <w>sakila</w>
       <w>tablename</w>
     </words>
   </dictionary>

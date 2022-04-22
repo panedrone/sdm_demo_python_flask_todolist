@@ -39,7 +39,9 @@ class GroupsService:
 
         # m: GroupEx = None
 
-        return GroupsDao(self.ds).get_groups(GroupEx.SQL)
+        return self.ds.get_all(GroupEx)
+
+        # return GroupsDao(self.ds).get_groups(GroupEx.SQL)
 
     def get_group(self, g_id):
         # https://www.tutorialspoint.com/sqlalchemy/sqlalchemy_orm_updating_objects.htm
