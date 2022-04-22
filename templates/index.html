@@ -36,7 +36,7 @@
             }
 
             function renderGroupDetails(g_id) {
-                fetch("/groups/" + g_id)
+                fetch("/group/" + g_id)
                         .then(response => response.json())
                         .then(group => {
                             let g_name = document.getElementById("g_name2");
@@ -65,7 +65,7 @@
                 let g_id = document.getElementById("curr_g_id").value;
                 let json = formToJson("form_update_group");
                 // alert(json)
-                fetch("/groups/" + g_id, {method: 'put', headers: JSON_HEADERS, body: json})
+                fetch("/group/" + g_id, {method: 'put', headers: JSON_HEADERS, body: json})
                         .then(response => response.status)
                         .then(status => {
                             if (status === 200) {
@@ -78,7 +78,7 @@
 
             function deleteGroup() {
                 let g_id = document.getElementById("curr_g_id").value;
-                fetch("/groups/" + g_id, {method: 'delete'})
+                fetch("/group/" + g_id, {method: 'delete'})
                         .then(response => response.status)
                         .then(status => {
                             if (status === 200) {
@@ -112,7 +112,7 @@
 
             function renderGroupTasks(g_id) {
                 let tasksTable = document.getElementById("tasks_table");
-                fetch("/tasks?g_id=" + g_id)
+                fetch("/group/" + g_id + "/tasks")
                         .then(response => response.json())
                         .then(taskList => {
                             while (tasksTable.rows.length > 1) {
@@ -141,7 +141,7 @@
             function taskCreate() {
                 let g_id = document.getElementById("curr_g_id").value;
                 let json = formToJson("form_create_task");
-                fetch("/tasks?g_id=" + g_id, {method: 'post', headers: JSON_HEADERS, body: json})
+                fetch("/group/" + g_id + "/tasks", {method: 'post', headers: JSON_HEADERS, body: json})
                         .then(response => response.status)
                         .then(status => {
                             if (status === 200) {

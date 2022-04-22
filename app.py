@@ -22,7 +22,7 @@ class GroupListResource(flask_restful.Resource):
         service.create_group(g_name)
 
 
-class GroupsResource(flask_restful.Resource):
+class GroupResource(flask_restful.Resource):
     @staticmethod
     def get(g_id):
         res = GroupsService().get_group(g_id)
@@ -38,16 +38,14 @@ class GroupsResource(flask_restful.Resource):
         GroupsService().delete_group(g_id)
 
 
-class TaskListResource(flask_restful.Resource):
+class GroupTasksResource(flask_restful.Resource):
     @staticmethod
-    def get():
-        g_id = flask.request.args['g_id']
+    def get(g_id):
         res = TasksService().get_group_tasks(g_id)
         return to_json_str(res)
 
     @staticmethod
-    def post():
-        g_id = flask.request.args['g_id']
+    def post(g_id):
         t_subject = flask.request.json["t_subject"]
         TasksService().create_task(g_id, t_subject)
 
@@ -75,8 +73,8 @@ class TasksResource(flask_restful.Resource):
 
 
 api.add_resource(GroupListResource, "/groups")
-api.add_resource(GroupsResource, "/groups/<g_id>")
-api.add_resource(TaskListResource, '/tasks')
+api.add_resource(GroupResource, "/group/<g_id>")
+api.add_resource(GroupTasksResource, '/group/<g_id>/tasks')
 api.add_resource(TasksResource, '/tasks/<t_id>')
 
 
