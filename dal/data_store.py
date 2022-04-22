@@ -100,7 +100,7 @@ class DataStore:
         self.transaction.rollback()
         self.transaction = None
 
-    def get_all(self, cls, params=None):
+    def get_all(self, cls, params=None) -> []:
         """
         :param cls: An __abstract_ model class or plain DTO class containing a static field "SQL"
         :param params: [] the values of SQL params
@@ -111,13 +111,25 @@ class DataStore:
         # connection = self.connect(close_with_result=True) ---- no need because of connected
         if params is None:
             params = []
+
         # with self._exec(cls.SQL, params) as rows: # .fetchall() -- AttributeError: __enter__
         cursor = self._exec(cls.SQL, params)
         try:
+            # https://stackoverflow.com/questions/31750441/generalised-insert-into-sqlalchemy-using-dictionary
+            # https://stackoverflow.com/questions/3451779/how-to-dynamically-create-an-instance-of-a-class-in-python
             # https://stackoverflow.com/questions/1958219/how-to-convert-sqlalchemy-row-object-to-a-python-dict
-            return [dict(row) for row in cursor]
+            res = [cls(**dict(row)) for row in cursor]
+            return res
         finally:
             cursor.close()
+
+    def get_one(self, cls, params=None):
+        rows = self.get_all(cls, params)
+        if len(rows) == 0:
+            raise Exception('No rows')
+        if len(rows) > 1:
+            raise Exception('More than 1 row exists')
+        return rows[0]
 
     def insert_row(self, sql, params, ai_values):
         """

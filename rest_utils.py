@@ -8,7 +8,9 @@ def to_json_str(obj):
         if len(obj) > 0:
             if isinstance(obj[0], Base):
                 res = [o.__dict__ for o in obj]
-                [r.pop('_sa_instance_state', None) for r in res]
+                # there is no '_sa_instance_state' for __abstract__
+                if '_sa_instance_state' in res[0]:
+                    [r.pop('_sa_instance_state', None) for r in res]
             else:
                 res = obj
         else:
