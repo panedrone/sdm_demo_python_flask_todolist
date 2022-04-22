@@ -75,7 +75,11 @@ class DataStore:
             self.conn.close()
             self.conn = None
 
-    def start_transaction(self):
+    def begin(self):
+        if self.transaction is None:
+            # https://docs.sqlalchemy.org/en/14/orm/session_transaction.html
+            self.session.begin()
+            return
         # https://docs.sqlalchemy.org/en/14/core/connections.html
         self.transaction = self.conn.begin()
 
