@@ -93,7 +93,7 @@
 
             function renderTaskDetails(t_id) {
                 document.getElementById("curr_t_id").value = t_id;
-                fetch("/tasks/" + t_id)
+                fetch("/task/" + t_id)
                         .then(response => response.json())
                         .then(task => {
                             let subj = document.getElementById("subj");
@@ -162,7 +162,7 @@
                         object["t_priority"] = parseInt(object["t_priority"]);
                     }
                 });
-                fetch("/tasks/" + t_id, {method: 'put', headers: JSON_HEADERS, body: json})
+                fetch("/task/" + t_id, {method: 'put', headers: JSON_HEADERS, body: json})
                         .then(response => response.status)
                         .then(status => {
                             if (status === 200) {
@@ -177,7 +177,7 @@
             function taskDelete() {
                 let g_id = document.getElementById("curr_g_id").value;
                 let t_id = document.getElementById("curr_t_id").value;
-                fetch("/tasks/" + t_id, {method: "delete"})
+                fetch("/task/" + t_id, {method: "delete"})
                         .then(response => response.status)
                         .then(status => {
                             if (status === 200) {

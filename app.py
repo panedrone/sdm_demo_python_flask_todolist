@@ -50,7 +50,7 @@ class GroupTasksResource(flask_restful.Resource):
         TasksService().create_task(g_id, t_subject)
 
 
-class TasksResource(flask_restful.Resource):
+class TaskResource(flask_restful.Resource):
     @staticmethod
     def get(t_id):
         task = TasksService().get_task(t_id)
@@ -75,7 +75,7 @@ class TasksResource(flask_restful.Resource):
 api.add_resource(GroupListResource, "/groups")
 api.add_resource(GroupResource, "/group/<g_id>")
 api.add_resource(GroupTasksResource, '/group/<g_id>/tasks')
-api.add_resource(TasksResource, '/tasks/<t_id>')
+api.add_resource(TaskResource, '/task/<t_id>')
 
 
 @app.route("/")
