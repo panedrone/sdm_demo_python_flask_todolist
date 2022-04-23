@@ -1,7 +1,6 @@
 from dal.data_store import DataStore
 from dal.group import Group
 from dal.group_ex import GroupEx
-from dal.groups_dao import GroupsDao
 from dal.task import Task
 
 

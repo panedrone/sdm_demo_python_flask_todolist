@@ -9,6 +9,19 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 
 Base = declarative_base()
 
+Column = sqlalchemy.Column
+
+SmallInteger = sqlalchemy.SmallInteger
+Integer = sqlalchemy.Integer
+BigInteger = sqlalchemy.BigInteger
+
+Float = sqlalchemy.Float
+
+DateTime = sqlalchemy.DateTime
+String = sqlalchemy.String
+Boolean = sqlalchemy.Boolean
+LargeBinary = sqlalchemy.LargeBinary
+
 
 class OutParam:
     def __init__(self):
