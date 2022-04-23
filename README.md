@@ -1,6 +1,2 @@
 # sdm_demo_python_flask_todolist
-Demo of how to use [SQL DAL Maker](https://github.com/panedrone/sqldalmaker) + Python/Flask/SQLAlchemy.
-
-![demo-go.png](demo-go.png)
-
-![erd.png](erd.png)
+Moved to [https://github.com/panedrone/sdm_demo_flask_sqlalchemy_todolist](https://github.com/panedrone/sdm_demo_flask_sqlalchemy_todolist)
